@@ -54,9 +54,13 @@ prj_withdrawal/
 └── .github/workflows/    integración continua
 ```
 
-## Ejecutar en macOS
+## Ejecución local
 
-Requiere Go 1.20 o posterior:
+Funciona en **Windows, macOS y Linux**. Requiere [Go 1.20 o
+posterior](https://go.dev/dl/) y Git. Python 3 es opcional y solo se necesita
+para ejecutar los escenarios Gherkin.
+
+Los siguientes comandos son iguales en Terminal, Bash, Zsh y PowerShell:
 
 ```sh
 git clone https://github.com/Gabriel-XDDDD/prj_withdrawal.git
@@ -64,7 +68,7 @@ cd prj_withdrawal
 go run .
 ```
 
-Abra <http://localhost:8080>. Para detener el servidor use `Control-C`.
+Abra <http://localhost:8080>. Para detener el servidor use `Ctrl+C`.
 
 Consola alternativa:
 
@@ -80,19 +84,46 @@ go run . -nombre Alice -saldo 234.56 -retiro 200 -test exito
 
 ## Pruebas
 
+Pruebas disponibles en todos los sistemas:
+
 ```sh
 go test -count=1 -v ./...
-go test -race -count=1 ./...
 go vet ./...
+```
+
+La detección de condiciones de carrera requiere una plataforma y un compilador
+C compatibles con el detector de Go:
+
+```sh
+go test -race -count=1 ./...
 ```
 
 Escenarios Gherkin:
 
+### macOS y Linux
+
 ```sh
 python3 -m venv .venv
 source .venv/bin/activate
-python -m pip install behave
+python -m pip install behave==1.3.3
 python -m behave
+```
+
+### Windows PowerShell
+
+```powershell
+py -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install behave==1.3.3
+python -m behave
+```
+
+Si PowerShell impide activar el entorno, puede ejecutar los comandos sin
+activarlo:
+
+```powershell
+.\.venv\Scripts\python.exe -m pip install behave==1.3.3
+.\.venv\Scripts\python.exe -m behave
 ```
 
 La suite comprueba retiros, abonos, importes inválidos, fondos insuficientes, concurrencia, corrupción del JSON, fechas UTC, recuperación del saldo y formularios HTTP.
